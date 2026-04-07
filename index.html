@@ -17,8 +17,31 @@
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       background: radial-gradient(circle at top, #242f52 0%, #0b0f1c 55%);
+      background-attachment: fixed;
       color: var(--text);
       line-height: 1.6;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(217, 169, 74, 0.02) 10px,
+        rgba(217, 169, 74, 0.02) 20px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 10px,
+        rgba(157, 123, 229, 0.02) 10px,
+        rgba(157, 123, 229, 0.02) 20px
+      );
+      pointer-events: none;
+      z-index: -1;
     }
     header {
       padding: 3rem 1.5rem 2rem;
@@ -416,7 +439,23 @@
         <span>03</span>
         <h2>Clips destacados</h2>
       </div>
+
+      <h3 style="margin: 2rem 0 1rem; color: var(--text);">Clips en la web</h3>
       <div class="grid cards-4">
+        <div class="clip-card">
+          <video controls width="100%" style="border-radius: 8px;">
+            <source src="PERO CORRETE DEL MEDIO.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+          <div class="clip-info">
+            <h3>Pero corréte del medio</h3>
+            <p>Clip embebido directamente</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin: 2rem 0 1rem; color: var(--text);">Clips en Medal.tv</h3>
+      <div class="grid cards-3">
         <a class="clip-card" href="https://medal.tv/es/games/requested/clips/mquwemWTaE-foV_P_?invite=cr-MSxsd3QsNDM5NjkxNjUz&v=21" target="_blank" rel="noreferrer noopener">
           <img class="clip-cover" src="portada1.png" alt="Portada clip 1">
           <div class="clip-info">
@@ -438,16 +477,6 @@
             <p>Ver clip en Medal.tv</p>
           </div>
         </a>
-        <div class="clip-card">
-          <video controls width="100%" style="border-radius: 8px;">
-            <source src="PERO CORRETE DEL MEDIO.mp4" type="video/mp4">
-            Tu navegador no soporta el elemento de video.
-          </video>
-          <div class="clip-info">
-            <h3>Pero corréte del medio</h3>
-            <p>Clip embebido directamente</p>
-          </div>
-        </div>
       </div>
       <p style="margin-top: 1rem; color: var(--muted);">Haz clic en la imagen o en el nombre para abrir el clip directamente en Medal.tv.</p>
     </section>
