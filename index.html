@@ -87,6 +87,7 @@
     }
     .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     .cards-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     .card {
       background: var(--card);
       border: 1px solid rgba(255,255,255,0.08);
@@ -413,7 +414,7 @@
         <span>03</span>
         <h2>Clips destacados</h2>
       </div>
-      <div class="grid cards-3">
+      <div class="grid cards-4">
         <a class="clip-card" href="https://medal.tv/es/games/requested/clips/mquwemWTaE-foV_P_?invite=cr-MSxsd3QsNDM5NjkxNjUz&v=21" target="_blank" rel="noreferrer noopener">
           <img class="clip-cover" src="portada1.png" alt="Portada clip 1">
           <div class="clip-info">
@@ -435,6 +436,16 @@
             <p>Ver clip en Medal.tv</p>
           </div>
         </a>
+        <div class="clip-card">
+          <video controls width="100%" style="border-radius: 8px;">
+            <source src="PERO CORRETE DEL MEDIO.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+          <div class="clip-info">
+            <h3>Pero corréte del medio</h3>
+            <p>Clip embebido directamente</p>
+          </div>
+        </div>
       </div>
       <p style="margin-top: 1rem; color: var(--muted);">Haz clic en la imagen o en el nombre para abrir el clip directamente en Medal.tv.</p>
     </section>
