@@ -16,7 +16,8 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at top, #242f52 0%, #0b0f1c 55%);
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 25%, #0d1117 50%, #1a1f35 75%, #0a0e1a 100%);
+      background-size: 400% 400%;
       background-attachment: fixed;
       color: var(--text);
       line-height: 1.6;
@@ -27,18 +28,18 @@
       position: fixed;
       inset: 0;
       background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 10px,
-        rgba(217, 169, 74, 0.02) 10px,
-        rgba(217, 169, 74, 0.02) 20px
+        90deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.03) 2px,
+        rgba(255, 255, 255, 0.03) 4px
       ),
       repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 10px,
-        rgba(157, 123, 229, 0.02) 10px,
-        rgba(157, 123, 229, 0.02) 20px
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.02) 2px,
+        rgba(255, 255, 255, 0.02) 4px
       );
       pointer-events: none;
       z-index: -1;
@@ -328,6 +329,29 @@
       color: var(--muted);
       font-size: 0.95rem;
     }
+    video {
+      width: 100%;
+      border-radius: 0.8rem;
+      background: #000;
+    }
+    video::-webkit-media-controls-panel {
+      background-color: rgba(217, 169, 74, 0.1);
+    }
+    video::-webkit-media-controls-play-button {
+      background: transparent;
+      color: var(--accent);
+    }
+    video::-webkit-media-controls-current-time-display,
+    video::-webkit-media-controls-time-remaining-display {
+      color: var(--text);
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      border-radius: 0.8rem;
+      overflow: hidden;
+      background: #000;
+    }
     @media (max-width: 640px) {
       nav { gap: 0.6rem; }
     }
@@ -443,10 +467,12 @@
       <h3 style="margin: 2rem 0 1rem; color: var(--text);">Clips en la web</h3>
       <div class="grid cards-4">
         <div class="clip-card">
-          <video controls width="100%" style="border-radius: 8px;">
-            <source src="PERO CORRETE DEL MEDIO.mp4" type="video/mp4">
-            Tu navegador no soporta el elemento de video.
-          </video>
+          <div class="video-container">
+            <video controls controlsList="nodownload" style="width: 100%; display: block;">
+              <source src="PERO CORRETE DEL MEDIO.mp4" type="video/mp4">
+              Tu navegador no soporta el elemento de video.
+            </video>
+          </div>
           <div class="clip-info">
             <h3>Pero corréte del medio</h3>
             <p>Clip embebido directamente</p>
