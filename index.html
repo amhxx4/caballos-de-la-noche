@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caballos de la Noche</title>
+  <style>
+    :root {
+      --bg: #0b0f1c;
+      --card: #131a30;
+      --accent: #d9a94a;
+      --text: #e7e9f1;
+      --muted: #9bb0d3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #242f52 0%, #0b0f1c 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(18,31,65,0.96), transparent 85%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.08em;
+    }
+    header p {
+      max-width: 760px;
+      margin: 1rem auto 0;
+      color: var(--muted);
+    }
+    nav {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.6rem 1rem;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    nav a:hover { background: rgba(217,169,74,0.16); transform: translateY(-2px); }
+    .container {
+      width: min(1200px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 4rem;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .section-heading h2 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .section-heading span {
+      display: inline-flex;
+      width: 2.5rem;
+      height: 2.5rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(217,169,74,0.18);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+    .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(217,169,74,0.15), transparent 28%);
+      pointer-events: none;
+    }
+    .card h3, .card h4 {
+      margin: 0 0 0.75rem;
+    }
+    .role {
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(217,169,74,0.12);
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-bottom: 0.9rem;
+    }
+    .card p { margin: 0 0 1rem; color: var(--muted); }
+    .avatar {
+      width: 100%;
+      height: 160px;
+      border-radius: 1rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,0.55);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px dashed rgba(255,255,255,0.12);
+    }
+    .logo {
+      width: auto;
+      max-width: 140px;
+      height: auto;
+      display: block;
+      margin: 0 auto 1.4rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .badge { color: var(--accent); }
+    .clip-card {
+      display: grid;
+      gap: 1rem;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .clip-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(217,169,74,0.4);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    }
+    .clip-cover {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 1rem 1rem 0 0;
+    }
+    .clip-info {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+    .clip-info h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    .clip-info p {
+      margin: 0;
+      color: var(--muted);
+    }
+    .creator-card {
+      max-width: 380px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .creator-img {
+      width: 128px;
+      height: 128px;
+      display: block;
+      margin: 0 auto 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      object-fit: cover;
+      background: #0b0f1c;
+    }
+    .media-card {
+      display: grid;
+      gap: 1rem;
+    }
+    .media-card iframe, .media-card .placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 1rem;
+      border: 0;
+      background: #0f172a;
+      color: #99abd4;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    .tag-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+    .tag-list li {
+      font-size: 0.85rem;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+    }
+    .poll-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    }
+    .poll-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.04);
+      border-radius: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .poll-option:hover {
+      background: rgba(217,169,74,0.12);
+    }
+    .poll-option input {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+    }
+    .poll-option label {
+      flex: 1;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .poll-result {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .result-item {
+      margin-bottom: 1.5rem;
+    }
+    .result-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .result-bar {
+      width: 100%;
+      height: 24px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .result-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), rgba(217,169,74,0.6));
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.5rem;
+      color: #000;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .poll-button {
+      width: 100%;
+      padding: 0.8rem 1.5rem;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, var(--accent), rgba(217,169,74,0.8));
+      color: #0b0f1c;
+      border: none;
+      border-radius: 0.8rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .poll-button:hover {
+      transform: translateY(-2px);
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    @media (max-width: 640px) {
+      nav { gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="logo" src="caballos.png" alt="Logo Caballos de la Noche">
+    <h1>Caballos de la Noche</h1>
+    <p>Una página dedicada al universo del grupo, su historia, sus clips más recordados y los miembros organizados por roles.</p>
+    <nav>
+      <a href="#historia">Historia</a>
+      <a href="#miembros">Miembros</a>
+      <a href="#clips">Clips</a>
+      <a href="#votacion">Votación</a>
+      <a href="#creador">Creador</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="historia">
+      <div class="section-heading">
+        <span>01</span>
+        <h2>Historia del grupo</h2>
+      </div>
+      <div class="card">
+        <p>Los <strong>Caballos de la Noche</strong> fue un grupo creado por Israel, el cual ideó crear con amigos de la comunidad de JTCO (Juegan todos con Oveja). El grupo fue diseñado principalmente para jugar y conversar, con calls activas, que es lo que lo hace mítico.</p>
+        <p>Sus primeros usuarios registrados fueron: Israel, Kiosquero, Profeta, Ronca, Puntito y Silva</p>
+      </div>
+    </section>
+
+    <section id="miembros">
+      <div class="section-heading">
+        <span>02</span>
+        <h2>Roles y miembros</h2>
+      </div>
+      <div class="card">
+        <h3>Administradores</h3>
+        <ul>
+          <li>Lel (m0nx.)</li>
+          <li>Rondon (maximo8638)</li>
+          <li>Armaloo (armaloo)</li>
+          <li>Silva (skaybeilison)</li>
+          <li>Ronca (capithecap)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Moderadores</h3>
+        <ul>
+          <li>elrusovv (elrusovv)</li>
+          <li>profeta (luchiiqq)</li>
+          <li>kiyora (moneyforever765)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Caballo de San Martín</h3>
+        <ul>
+          <li>Israel (israel7029)</li>
+          <li>Kiosquero (rockargentino)</li>
+          <li>Lucapo (lucapo_)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Miembros</h3>
+        <ul>
+          <li>matiamiluu (ilvym_)</li>
+          <li>Meseri (meseri_dis)</li>
+          <li>JuanMablo (hernansito)</li>
+          <li>chicago ç (chicago_secundario_10084)</li>
+          <li>mene (antesnickeabamene)</li>
+          <li>ortega (miqueas5743)</li>
+          <li>Benja (benjkk_)</li>
+          <li>De gea (monoasqueroso)</li>
+          <li>Double (double215)</li>
+          <li>Eslovenia (eslovenia_13)</li>
+          <li>facuuy (facuuy._)</li>
+          <li>SalameGamer777 (luquita10)</li>
+          <li>MagoValdiviaa⭐ (magovaldivia65652)</li>
+          <li>mi bombo (bingo.boxeador)</li>
+          <li>Osvaldo (osv_14)</li>
+          <li>puntito (julianlk1234)</li>
+          <li>rodriguez (rodriguez12.4)</li>
+          <li>Trini (poncini_)</li>
+          <li>calleriOTK7 (callerii12)</li>
+          <li>colo (snt5)</li>
+          <li>falopinha (.falopina)</li>
+          <li>fribu (fribuqsy)</li>
+          <li>Hungria (godee0203_36395)</li>
+          <li>Martito (martop_dc)</li>
+          <li>Nelson Mandela (mandelaforever)</li>
+          <li>NeThErFi (netherf1) (¿Who is he?)</li>
+          <li>pan con queso (panceta1719)</li>
+          <li>santi (_.santi21)</li>
+          <li>tererezinho (tererezinho)</li>
+          <li>tuvieja (pablon27)</li>
+          <li>Zanetti (zanetti4654)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Usuarios Viejos</h3>
+        <ul>   
+        <li>Coreyy (coreyy_)</li>
+        </ul>
+      </div>
+        <section id="clips">
+      <div class="section-heading">
+        <span>03</span>
+        <h2>Clips destacados</h2>
+      </div>
+      <div class="grid cards-3">
+        <a class="clip-card" href="https://medal.tv/es/games/requested/clips/mquwemWTaE-foV_P_?invite=cr-MSxsd3QsNDM5NjkxNjUz&v=21" target="_blank" rel="noreferrer noopener">
+          <img class="clip-cover" src="portada1.png" alt="Portada clip 1">
+          <div class="clip-info">
+            <h3>Filósofo el tipo</h3>
+            <p>Ver clip en Medal.tv</p>
+          </div>
+        </a>
+        <a class="clip-card" href="https://medal.tv/games/roblox/clips/m5Xl0xWnSh6QAa21x?invite=cr-MSxnSWMsNDM5NjkxNjUz" target="_blank" rel="noreferrer noopener">
+          <img class="clip-cover" src="portada2.png" alt="Portada clip 2">
+          <div class="clip-info">
+            <h3>Lo sigue con la cabeza!!</h3>
+            <p>Ver clip en Medal.tv</p>
+          </div>
+        </a>
+        <a class="clip-card" href="https://medal.tv/es/games/requested/clips/m3EavHsXf6hppHFAr?invite=cr-MSw2djAsNDM5NjkxNjUz&v=29" target="_blank" rel="noreferrer noopener">
+          <img class="clip-cover" src="portada3.png" alt="Portada clip 3">
+          <div class="clip-info">
+            <h3>¡Ole temonio!</h3>
+            <p>Ver clip en Medal.tv</p>
+          </div>
+        </a>
+      </div>
+      <p style="margin-top: 1rem; color: var(--muted);">Haz clic en la imagen o en el nombre para abrir el clip directamente en Medal.tv.</p>
+    </section>
+
+    <section id="votacion">
+      <div class="section-heading">
+        <span>04</span>
+        <h2>¿Qué deberíamos agregar?</h2>
+      </div>
+      <div class="poll-card">
+        <p style="margin: 0 0 1.5rem; color: var(--muted);">Comparte tu sugerencia y ayuda a mejorar la página.</p>
+        <form id="suggestionForm">
+          <div style="margin-bottom: 1.5rem;">
+            <label for="nombre" style="display: block; color: var(--text); margin-bottom: 0.5rem; font-weight: 500;">Tu nombre (opcional):</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre..." style="width: 100%; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); font-size: 1rem;">
+          </div>
+          <div style="margin-bottom: 1.5rem;">
+            <label for="sugerencia" style="display: block; color: var(--text); margin-bottom: 0.5rem; font-weight: 500;">Tu sugerencia:</label>
+            <textarea id="sugerencia" name="sugerencia" placeholder="¿Qué te gustaría ver en la página?" required style="width: 100%; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); font-size: 1rem; min-height: 120px; font-family: inherit; resize: vertical;"></textarea>
+          </div>
+          <button type="submit" class="poll-button">Enviar sugerencia</button>
+        </form>
+        <div id="successMessage" style="display: none; margin-top: 1.5rem; padding: 1rem; background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.3); border-radius: 0.8rem; color: #4db850; text-align: center;">
+          ✓ ¡Gracias por tu sugerencia!
+        </div>
+      </div>
+    </section>
+
+    <section id="creador">
+      <div class="section-heading">
+        <span>05</span>
+        <h2>Creador del sitio</h2>
+      </div>
+      <div class="creator-card clip-card">
+        <img class="creator-img" src="creator.png" alt="Foto de matiamiluu" onerror="if(!this.dataset.tried){this.dataset.tried='imgur';this.src='https://i.imgur.com/xPPof9z.jpg';} else {this.onerror=null;}">
+        <div class="clip-info">
+          <h3>matiamiluu (ilvym_)</h3>
+          <p>Creador e ideador de esta página.</p>
+          <p>Diseñó el sitio y puso en marcha la idea Web Caballos de la Noche.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Caballos de la Noche — Una comunidad con historia, clips épicos y el creador que llevó este sitio a la realidad.</p>
+  </footer>
+
+  <script>
+    // URL del Apps Script de Google
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLHMLTZZz3FMJr1hNI71sXYSboM_Rp2bVWXhNhqV7soX7RqDPYdDsEkjyFIo4zijimxg/exec";
+    const COOLDOWN_TIME = 300000; // 5 minutos en milisegundos
+
+    // Verificar si el usuario puede enviar (anti-spam)
+    function canSubmitSuggestion() {
+      const lastSubmit = localStorage.getItem('lastSuggestionTime');
+      if (!lastSubmit) return true;
+      
+      const timePassed = Date.now() - parseInt(lastSubmit);
+      return timePassed >= COOLDOWN_TIME;
+    }
+
+    // Obtener tiempo restante para el siguiente envío
+    function getTimeRemaining() {
+      const lastSubmit = localStorage.getItem('lastSuggestionTime');
+      if (!lastSubmit) return 0;
+      
+      const timePassed = Date.now() - parseInt(lastSubmit);
+      const remaining = COOLDOWN_TIME - timePassed;
+      return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
+    }
+
+    // Actualizar estado del botón
+    function updateSubmitButton() {
+      const btn = document.querySelector('#suggestionForm button[type="submit"]');
+      const timeRemaining = getTimeRemaining();
+      
+      if (timeRemaining > 0) {
+        btn.disabled = true;
+        btn.textContent = `Espera ${timeRemaining}s antes de enviar otra`;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+        
+        setTimeout(updateSubmitButton, 1000);
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Enviar sugerencia';
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }
+    }
+
+    // Manejar el envío del formulario de sugerencias
+    document.getElementById('suggestionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Verificar anti-spam
+      if (!canSubmitSuggestion()) {
+        const timeRemaining = getTimeRemaining();
+        alert(`Por favor espera ${timeRemaining} segundos antes de enviar otra sugerencia.`);
+        return;
+      }
+
+      const nombre = document.getElementById('nombre').value || 'Anónimo';
+      const sugerencia = document.getElementById('sugerencia').value;
+      
+      if (!sugerencia.trim()) {
+        alert('Por favor escribe una sugerencia');
+        return;
+      }
+
+      const btn = document.querySelector('#suggestionForm button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      // Enviar los datos al Google Apps Script
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('sugerencia', sugerencia);
+
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Guardar tiempo del último envío
+        localStorage.setItem('lastSuggestionTime', Date.now().toString());
+        
+        // Mostrar mensaje de éxito
+        const successMsg = document.getElementById('successMessage');
+        successMsg.style.display = 'block';
+        
+        // Limpiar formulario
+        document.getElementById('suggestionForm').reset();
+        
+        // Actualizar botón
+        updateSubmitButton();
+        
+        // Ocultar el mensaje después de 5 segundos
+        setTimeout(() => {
+          successMsg.style.display = 'none';
+        }, 5000);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        btn.disabled = false;
+        btn.textContent = 'Enviar sugerencia';
+        alert('Hubo un error al enviar tu sugerencia. Intenta de nuevo.');
+      });
+    });
+
+    // Verificar estado del botón al cargar
+    window.addEventListener('load', updateSubmitButton);
+  </script>
+</body>
+</html>
