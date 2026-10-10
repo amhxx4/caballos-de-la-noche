@@ -1,4 +1,3 @@
-```javascript
 const ALLOWED_ORIGINS = [
   'https://amhxx4.github.io',
 ];
@@ -313,4 +312,3 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
-```
