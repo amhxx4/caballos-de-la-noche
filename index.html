@@ -9,8 +9,14 @@
       --bg: #0b0f1c;
       --card: #131a30;
       --accent: #d9a94a;
+      --accent-soft: rgba(217,169,74,0.18);
       --text: #e7e9f1;
       --muted: #9bb0d3;
+      --panel: rgba(12,17,29,0.96);
+      --panel-border: rgba(255,255,255,0.08);
+      --success: #37d67a;
+      --danger: #ff6b6b;
+      --shadow: rgba(0,0,0,0.28);
     }
     * { box-sizing: border-box; }
     body {
@@ -102,7 +108,6 @@
     }
     .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     .cards-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     .card {
       background: var(--card);
       border: 1px solid rgba(255,255,255,0.08);
@@ -343,8 +348,265 @@
       overflow: hidden;
       background: #000;
     }
+    .chat-toggle {
+      position: fixed;
+      right: 1.1rem;
+      bottom: 1.1rem;
+      z-index: 1000;
+      width: 58px;
+      height: 58px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(18,31,65,0.96), rgba(25,38,69,0.92));
+      color: var(--accent);
+      font-size: 1.55rem;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.35);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .chat-toggle:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 22px 40px rgba(0,0,0,0.42);
+    }
+    .chat-panel {
+      position: fixed;
+      right: 1rem;
+      bottom: 5.2rem;
+      width: min(420px, calc(100vw - 1.2rem));
+      max-height: min(70vh, 620px);
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 1.2rem;
+      box-shadow: 0 25px 50px var(--shadow);
+      overflow: hidden;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    }
+    .chat-panel.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: linear-gradient(180deg, rgba(217,169,74,0.12), rgba(255,255,255,0.02));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .chat-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+    .chat-status {
+      font-size: 0.74rem;
+      color: var(--muted);
+      padding: 0.25rem 0.55rem;
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .chat-close {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      background: rgba(255,255,255,0.015);
+    }
+    .message {
+      max-width: 85%;
+      padding: 0.8rem 0.9rem;
+      border-radius: 1rem;
+      line-height: 1.45;
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+    .message.ai {
+      align-self: flex-start;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+    }
+    .message.user {
+      align-self: flex-end;
+      background: rgba(217,169,74,0.14);
+      border: 1px solid rgba(217,169,74,0.3);
+      color: var(--text);
+    }
+    .message.system {
+      align-self: center;
+      max-width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,255,255,0.12);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .message.loading {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+    }
+    .dot-loader {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1.05); }
+    }
+    .chat-input-wrap {
+      display: flex;
+      gap: 0.7rem;
+      padding: 0.8rem 0.8rem 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10,14,24,0.95);
+    }
+    .chat-input {
+      flex: 1;
+      min-height: 52px;
+      max-height: 120px;
+      padding: 0.8rem 0.9rem;
+      resize: vertical;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0.85rem;
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font: inherit;
+    }
+    .chat-input:focus {
+      outline: 2px solid rgba(217,169,74,0.4);
+      border-color: rgba(217,169,74,0.4);
+    }
+    .chat-send {
+      border: none;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, var(--accent), rgba(217,169,74,0.8));
+      color: #101826;
+      font-weight: 700;
+      padding: 0.8rem 1rem;
+      min-width: 90px;
+      cursor: pointer;
+    }
+    .chat-send:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+    .dev-panel {
+      display: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(8,12,21,0.9);
+    }
+    .dev-panel.is-visible {
+      display: block;
+    }
+    .dev-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 0.9rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .dev-header strong {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    .dev-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .dev-button {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 0.7rem;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.76rem;
+      cursor: pointer;
+    }
+    .dev-button.primary {
+      background: rgba(217,169,74,0.18);
+      border-color: rgba(217,169,74,0.4);
+      color: var(--accent);
+    }
+    .dev-body {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      padding: 0.8rem;
+      max-height: 360px;
+      overflow: auto;
+    }
+    .dev-summary {
+      padding: 0.7rem 0.8rem;
+      border-radius: 0.8rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .dev-code {
+      margin: 0;
+      padding: 0.8rem;
+      border-radius: 0.8rem;
+      background: rgba(3,7,18,0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dfe7ff;
+      font-size: 0.72rem;
+      overflow: auto;
+      white-space: pre-wrap;
+      max-height: 200px;
+    }
+    .dev-preview {
+      width: 100%;
+      min-height: 220px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0.85rem;
+      overflow: hidden;
+      background: #fff;
+    }
+    .dev-preview iframe {
+      width: 100%;
+      height: 260px;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
     @media (max-width: 640px) {
       nav { gap: 0.6rem; }
+      .chat-panel {
+        right: 0.5rem;
+        bottom: 4.7rem;
+        width: min(94vw, 420px);
+      }
+      .chat-toggle {
+        right: 0.75rem;
+        bottom: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -369,8 +631,8 @@
         <h2>Historia del grupo</h2>
       </div>
       <div class="card">
-        <p>Los <strong>Caballos de la Noche</strong> fue un grupo creado por Israel, el cual ideó crear con amigos de la comunidad de JTCO (Juegan todos con Oveja). El grupo fue diseñado principalmente para jugar y conversar, con calls activas, que es lo que lo hace mítico.</p>
-        <p>Sus primeros usuarios registrados fueron: Israel, Kiosquero, Profeta, Ronca, Puntito y Silva</p>
+        <p>Los <strong>Caballos de la Noche</strong> fue un grupo creado por Israel, el cual ideó crear con amigos de la comunidad de JTCO (Juegan todos con Oveja). El grupo fue diseñado principalmente como un espacio de comunidad, humor y compartir momentos dentro del juego.</p>
+        <p>Sus primeros usuarios registrados fueron: Israel, Kiosquero, Profeta, Ronca, Puntito y Silva.</p>
       </div>
     </section>
 
@@ -443,8 +705,8 @@
       </div>
       <div class="card">
         <h3>Usuarios Viejos</h3>
-        <ul>   
-        <li>Coreyy (coreyy_)</li>
+        <ul>
+          <li>Coreyy (coreyy_)</li>
         </ul>
       </div>
     </section>
@@ -508,15 +770,15 @@
         <form id="suggestionForm">
           <div style="margin-bottom: 1.5rem;">
             <label for="nombre" style="display: block; color: var(--text); margin-bottom: 0.5rem; font-weight: 500;">Tu nombre (opcional):</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre..." style="width: 100%; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); font-size: 1rem;">
+            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre..." style="width: 100%; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text);">
           </div>
           <div style="margin-bottom: 1.5rem;">
             <label for="sugerencia" style="display: block; color: var(--text); margin-bottom: 0.5rem; font-weight: 500;">Tu sugerencia:</label>
-            <textarea id="sugerencia" name="sugerencia" placeholder="¿Qué te gustaría ver en la página?" required style="width: 100%; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); font-size: 1rem; min-height: 120px; font-family: inherit; resize: vertical;"></textarea>
+            <textarea id="sugerencia" name="sugerencia" placeholder="¿Qué te gustaría ver en la página?" required style="width: 100%; min-height: 120px; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); resize: vertical;"></textarea>
           </div>
           <button type="submit" class="poll-button">Enviar sugerencia</button>
         </form>
-        <div id="successMessage" style="display: none; margin-top: 1.5rem; padding: 1rem; background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.3); border-radius: 0.8rem; color: #4db850; text-align: center;">
+        <div id="successMessage" style="display: none; margin-top: 1.5rem; padding: 1rem; background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.3); border-radius: 0.8rem; color: #dfffe8;">
           ✓ ¡Gracias por tu sugerencia!
         </div>
       </div>
@@ -528,7 +790,7 @@
         <h2>Creador del sitio</h2>
       </div>
       <div class="creator-card clip-card">
-        <img class="creator-img" src="creator.png" alt="Foto de matiamiluu" onerror="if(!this.dataset.tried){this.dataset.tried='imgur';this.src='https://i.imgur.com/xPPof9z.jpg';} else {this.onerror=null;}">
+        <img class="creator-img" src="creator.png" alt="Foto de matiamiluu" onerror="if(!this.dataset.tried){this.dataset.tried='imgur';this.src='https://i.imgur.com/xPPof9z.jpg';} else {this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22128%22 height=%22128%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%230c1426%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23d9a94a%22 font-size=%2216%22 font-family=%22Arial%22%3ECDN%3C/text%3E%3C/svg%3E';}">
         <div class="clip-info">
           <h3>matiamiluu (ilvym_)</h3>
           <p>Creador e ideador de esta página.</p>
@@ -542,41 +804,80 @@
     <p>Caballos de la Noche — Una comunidad con historia, clips épicos y el creador que llevó este sitio a la realidad.</p>
   </footer>
 
-  <script>
-    // URL del Apps Script de Google
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLHMLTZZz3FMJr1hNI71sXYSboM_Rp2bVWXhNhqV7soX7RqDPYdDsEkjyFIo4zijimxg/exec";
-    const COOLDOWN_TIME = 300000; // 5 minutos en milisegundos
+  <button id="chatToggleButton" class="chat-toggle" aria-label="Abrir chat">💬</button>
 
-    // Verificar si el usuario puede enviar (anti-spam)
+  <aside id="chatPanel" class="chat-panel" aria-live="polite" aria-label="Chat de Caballos de la Noche">
+    <div class="chat-header">
+      <h3>Caballos IA</h3>
+      <div class="chat-status" id="chatStatus">Listo</div>
+      <button id="chatCloseButton" class="chat-close" aria-label="Cerrar chat">×</button>
+    </div>
+
+    <div id="chatMessages" class="chat-messages">
+      <div class="message ai">Hola, soy la IA de Caballos de la Noche. Preguntame por la historia, los roles, los clips o pedime cambios con /dev.</div>
+    </div>
+
+    <div id="devPanel" class="dev-panel">
+      <div class="dev-header">
+        <strong>Modo desarrollador</strong>
+        <div class="dev-actions">
+          <button class="dev-button" id="devBackButton" type="button">Volver</button>
+          <button class="dev-button primary" id="devRegenerateButton" type="button">Regenerar</button>
+          <button class="dev-button" id="devDownloadButton" type="button">Descargar</button>
+        </div>
+      </div>
+      <div class="dev-body">
+        <div id="devSummary" class="dev-summary">Sin propuesta todavía.</div>
+        <pre id="devCode" class="dev-code">{}</pre>
+        <div class="dev-preview">
+          <iframe id="devPreviewFrame" title="Vista previa del cambio propuesto" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-wrap">
+      <textarea id="chatInput" class="chat-input" placeholder="Escribí tu mensaje o /dev para abrir el modo desarrollador..." rows="1"></textarea>
+      <button id="chatSendButton" class="chat-send" type="button">Enviar</button>
+    </div>
+  </aside>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLHMLTZZz3FMJr1hNI71sXYSboM_Rp2bVWXhNhqV7soX7RqDPYdDsEkjyFIo4zijimxg/exec";
+    const COOLDOWN_TIME = 300000;
+    const CHAT_API_URL = (window.CABALLOS_CHAT_API_URL || "").replace(/\/$/, "");
+    const state = {
+      rateLimitUntil: 0,
+      isLoading: false,
+      lastDevPrompt: "",
+      lastDevProposal: null,
+      lastRequestAt: 0
+    };
+
     function canSubmitSuggestion() {
       const lastSubmit = localStorage.getItem('lastSuggestionTime');
       if (!lastSubmit) return true;
-      
-      const timePassed = Date.now() - parseInt(lastSubmit);
+      const timePassed = Date.now() - parseInt(lastSubmit, 10);
       return timePassed >= COOLDOWN_TIME;
     }
 
-    // Obtener tiempo restante para el siguiente envío
     function getTimeRemaining() {
       const lastSubmit = localStorage.getItem('lastSuggestionTime');
       if (!lastSubmit) return 0;
-      
-      const timePassed = Date.now() - parseInt(lastSubmit);
+      const timePassed = Date.now() - parseInt(lastSubmit, 10);
       const remaining = COOLDOWN_TIME - timePassed;
       return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
     }
 
-    // Actualizar estado del botón
     function updateSubmitButton() {
       const btn = document.querySelector('#suggestionForm button[type="submit"]');
       const timeRemaining = getTimeRemaining();
-      
+      if (!btn) return;
+
       if (timeRemaining > 0) {
         btn.disabled = true;
         btn.textContent = `Espera ${timeRemaining}s antes de enviar otra`;
         btn.style.opacity = '0.5';
         btn.style.cursor = 'not-allowed';
-        
         setTimeout(updateSubmitButton, 1000);
       } else {
         btn.disabled = false;
@@ -586,68 +887,341 @@
       }
     }
 
-    // Manejar el envío del formulario de sugerencias
-    document.getElementById('suggestionForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Verificar anti-spam
-      if (!canSubmitSuggestion()) {
-        const timeRemaining = getTimeRemaining();
-        alert(`Por favor espera ${timeRemaining} segundos antes de enviar otra sugerencia.`);
-        return;
-      }
+    function addMessage(text, type = 'ai') {
+      const messages = document.getElementById('chatMessages');
+      const message = document.createElement('div');
+      message.className = `message ${type}`;
+      message.textContent = text;
+      messages.appendChild(message);
+      messages.scrollTop = messages.scrollHeight;
+    }
 
-      const nombre = document.getElementById('nombre').value || 'Anónimo';
-      const sugerencia = document.getElementById('sugerencia').value;
-      
-      if (!sugerencia.trim()) {
-        alert('Por favor escribe una sugerencia');
-        return;
-      }
+    function setChatStatus(text) {
+      const status = document.getElementById('chatStatus');
+      if (status) status.textContent = text;
+    }
 
-      const btn = document.querySelector('#suggestionForm button[type="submit"]');
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
-
-      // Enviar los datos al Google Apps Script
-      const formData = new FormData();
-      formData.append('nombre', nombre);
-      formData.append('sugerencia', sugerencia);
-
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Guardar tiempo del último envío
-        localStorage.setItem('lastSuggestionTime', Date.now().toString());
-        
-        // Mostrar mensaje de éxito
-        const successMsg = document.getElementById('successMessage');
-        successMsg.style.display = 'block';
-        
-        // Limpiar formulario
-        document.getElementById('suggestionForm').reset();
-        
-        // Actualizar botón
-        updateSubmitButton();
-        
-        // Ocultar el mensaje después de 5 segundos
+    function toggleChat(forceOpen) {
+      const panel = document.getElementById('chatPanel');
+      const next = typeof forceOpen === 'boolean' ? forceOpen : !panel.classList.contains('is-open');
+      panel.classList.toggle('is-open', next);
+      const button = document.getElementById('chatToggleButton');
+      if (button) button.setAttribute('aria-expanded', String(next));
+      if (next) {
         setTimeout(() => {
-          successMsg.style.display = 'none';
-        }, 5000);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        btn.disabled = false;
-        btn.textContent = 'Enviar sugerencia';
-        alert('Hubo un error al enviar tu sugerencia. Intenta de nuevo.');
-      });
-    });
+          const input = document.getElementById('chatInput');
+          if (input) input.focus();
+        }, 100);
+      }
+    }
 
-    // Verificar estado del botón al cargar
-    window.addEventListener('load', updateSubmitButton);
+    function showLoadingState() {
+      const messages = document.getElementById('chatMessages');
+      const loader = document.createElement('div');
+      loader.className = 'message ai loading';
+      loader.innerHTML = '<span>pensando</span><span class="dot-loader"></span>';
+      loader.id = 'chatLoader';
+      messages.appendChild(loader);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideLoadingState() {
+      const loader = document.getElementById('chatLoader');
+      if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function parseDeveloperPayload(data) {
+      if (!data) return null;
+      if (typeof data === 'string') {
+        try {
+          return JSON.parse(data);
+        } catch (error) {
+          return {
+            summary: data,
+            proposedChanges: [data],
+            notes: ['La respuesta llegó en texto plano y no en JSON estructurado.'],
+            previewHtml: '<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#0b0f1c;color:#e7e9f1;padding:24px;"><h2>Propuesta</h2><p>' + escapeHtml(data) + '</p></body></html>'
+          };
+        }
+      }
+      return data;
+    }
+
+    function renderDeveloperProposal(payload) {
+      const devPanel = document.getElementById('devPanel');
+      const summaryBox = document.getElementById('devSummary');
+      const codeBox = document.getElementById('devCode');
+      const iframe = document.getElementById('devPreviewFrame');
+
+      const proposal = parseDeveloperPayload(payload);
+      state.lastDevProposal = proposal;
+
+      if (!proposal) {
+        return;
+      }
+
+      const summary = proposal.summary || 'No se generó resumen.';
+      const changes = Array.isArray(proposal.proposedChanges) ? proposal.proposedChanges : [summary];
+      const notes = Array.isArray(proposal.notes) ? proposal.notes : ['Sin notas adicionales.'];
+      const previewHtml = proposal.previewHtml || `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#0b0f1c;color:#e7e9f1;padding:24px;"><h2 style="color:#d9a94a;">Propuesta</h2><ul>${changes.map(item => '<li>' + escapeHtml(item) + '</li>').join('')}</ul></body></html>`;
+
+      summaryBox.textContent = [summary, '', 'Cambios sugeridos:', ...changes, '', 'Notas:', ...notes].join('\n');
+      codeBox.textContent = JSON.stringify({ summary, proposedChanges: changes, notes }, null, 2);
+
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(previewHtml);
+      doc.close();
+
+      devPanel.classList.add('is-visible');
+      toggleChat(true);
+    }
+
+    function sanitizeMessage(input) {
+      const clean = String(input || '').trim();
+      if (!clean) return '';
+      if (clean.length > 1800) {
+        return clean.slice(0, 1800);
+      }
+      return clean;
+    }
+
+    async function sendMessageToWorker(message, mode = 'chat') {
+      const cleanMessage = sanitizeMessage(message);
+      if (!cleanMessage) {
+        addMessage('Escribí algo antes de mandar.', 'system');
+        return;
+      }
+
+      if (Date.now() < state.rateLimitUntil) {
+        const remainingMs = state.rateLimitUntil - Date.now();
+        const seconds = Math.max(1, Math.ceil(remainingMs / 1000));
+        addMessage(`Esperá ${seconds}s antes de mandar otra consulta.`, 'system');
+        return;
+      }
+
+      if (!CHAT_API_URL) {
+        addMessage('Todavía no configuraste el worker de Cloudflare. En el archivo JavaScript tenés que definir la URL del worker. Si no lo configurás, la IA no puede responder.', 'system');
+        return;
+      }
+
+      if (state.isLoading) {
+        return;
+      }
+
+      state.isLoading = true;
+      state.lastRequestAt = Date.now();
+      state.rateLimitUntil = Date.now() + 2000;
+      setChatStatus(mode === 'developer' ? 'Interpretando' : 'Enviando');
+      showLoadingState();
+
+      const payload = {
+        message: cleanMessage,
+        mode,
+        htmlSnapshot: document.documentElement.outerHTML.slice(0, 18000)
+      };
+
+      try {
+        const response = await fetch(CHAT_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data || data.ok === false) {
+          const messageText = data && data.error ? data.error : 'No se pudo conectar con la IA.';
+          throw new Error(messageText);
+        }
+
+        if (mode === 'developer') {
+          const proposal = data.data || data.preview || null;
+          renderDeveloperProposal(proposal);
+          addMessage('La propuesta quedó lista. Revisá la vista previa y decidí si la aceptás.', 'system');
+          setChatStatus('Propuesta lista');
+        } else {
+          addMessage(data.reply || 'No recibí respuesta.', 'ai');
+          setChatStatus('Listo');
+        }
+      } catch (error) {
+        console.error('Chat error:', error);
+        addMessage(error && error.message ? error.message : 'Hubo un error al consultar la IA.', 'system');
+        setChatStatus('Error');
+      } finally {
+        state.isLoading = false;
+        hideLoadingState();
+      }
+    }
+
+    function sendCurrentChatInput() {
+      const input = document.getElementById('chatInput');
+      const value = input.value;
+      if (!value.trim()) return;
+
+      const normalized = value.trim();
+      const lower = normalized.toLowerCase();
+      const isDevCommand = lower.startsWith('/dev');
+      const userMessage = isDevCommand ? normalized.replace(/^\/dev\s*/i, '').trim() : normalized;
+
+      addMessage(normalized, 'user');
+      input.value = '';
+      input.style.height = '52px';
+
+      if (isDevCommand) {
+        const promptText = userMessage || 'Analizá la página y proponé cambios útiles para esta sección.';
+        state.lastDevPrompt = promptText;
+        sendMessageToWorker(promptText, 'developer');
+        return;
+      }
+
+      sendMessageToWorker(normalized, 'chat');
+    }
+
+    function setupChatInput() {
+      const input = document.getElementById('chatInput');
+      const sendButton = document.getElementById('chatSendButton');
+      const chatToggleButton = document.getElementById('chatToggleButton');
+      const chatCloseButton = document.getElementById('chatCloseButton');
+
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          sendCurrentChatInput();
+        }
+      });
+
+      input.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+      });
+
+      sendButton.addEventListener('click', sendCurrentChatInput);
+      chatToggleButton.addEventListener('click', function () {
+        toggleChat();
+      });
+      chatCloseButton.addEventListener('click', function () {
+        toggleChat(false);
+      });
+    }
+
+    function setupDeveloperButtons() {
+      const backButton = document.getElementById('devBackButton');
+      const regenerateButton = document.getElementById('devRegenerateButton');
+      const downloadButton = document.getElementById('devDownloadButton');
+
+      backButton.addEventListener('click', function () {
+        document.getElementById('devPanel').classList.remove('is-visible');
+        setChatStatus('Listo');
+      });
+
+      regenerateButton.addEventListener('click', function () {
+        if (!state.lastDevPrompt) {
+          addMessage('Todavía no hay una propuesta para regenerar.', 'system');
+          return;
+        }
+        sendMessageToWorker(state.lastDevPrompt, 'developer');
+      });
+
+      downloadButton.addEventListener('click', function () {
+        if (!state.lastDevProposal || !state.lastDevProposal.previewHtml) {
+          addMessage('Primero tenés que generar una propuesta para descargarla.', 'system');
+          return;
+        }
+
+        const fileName = state.lastDevProposal.downloadName || 'caballos-dev-propuesta.html';
+        const blob = new Blob([state.lastDevProposal.previewHtml], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = fileName;
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        URL.revokeObjectURL(url);
+        addMessage('La propuesta se descargó como HTML.', 'system');
+      });
+    }
+
+    function setupSuggestionForm() {
+      const form = document.getElementById('suggestionForm');
+      if (!form) return;
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (!canSubmitSuggestion()) {
+          const timeRemaining = getTimeRemaining();
+          alert(`Por favor esperá ${timeRemaining} segundos antes de enviar otra sugerencia.`);
+          return;
+        }
+
+        const nombre = document.getElementById('nombre').value || 'Anónimo';
+        const sugerencia = document.getElementById('sugerencia').value;
+
+        if (!sugerencia.trim()) {
+          alert('Por favor escribí una sugerencia');
+          return;
+        }
+
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+
+        const formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('sugerencia', sugerencia);
+
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          body: formData
+        })
+          .then(async function (response) {
+            if (!response.ok) {
+              throw new Error('Respuesta fallida del servidor');
+            }
+            const contentType = response.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+              return response.json();
+            }
+            return { ok: true };
+          })
+          .then(function () {
+            localStorage.setItem('lastSuggestionTime', Date.now().toString());
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            form.reset();
+            updateSubmitButton();
+            setTimeout(function () {
+              successMsg.style.display = 'none';
+            }, 5000);
+          })
+          .catch(function (error) {
+            console.error('Error al enviar la sugerencia:', error);
+            alert('Hubo un error al enviar tu sugerencia. Intentá de nuevo.');
+          })
+          .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Enviar sugerencia';
+          });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      setupChatInput();
+      setupDeveloperButtons();
+      setupSuggestionForm();
+      updateSubmitButton();
+      window.addEventListener('load', updateSubmitButton);
+    });
   </script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+name = "caballos-chat"
+main = "worker.js"
+compatibility_date = "2025-10-10"
+
+[vars]
+# Acá no van secretos. Solo valores públicos.
+# La key real debe estar en Cloudflare como secret con el nombre GEMINI_API_KEY.
+
+[build]
+command = ""
+
+[observability]
+enabled = true
