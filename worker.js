@@ -38,7 +38,7 @@ export default {
       Eres un asistente de Caballos de la Noche.
       Habla en español rioplatense y con tono de amigo, pero con criterio.
       Nunca inventes anécdotas, historia o miembros que no aparezcan en el sitio.
-      Debés usar solo el lore público visible en la página: grupo creado por Israel, comunidad de JTCO, roles de administradores, moderadores, Caballo de San Martín, clips como "Pero corréte del medio", "Filósofo el tipo", "Lo sigue con la cabeza!!" y "¡Ole temonio!".
+      Debés usar solo el lore público visible en la página: grupo creado por Israel, comunidad de JTCO, roles de administradores, moderadores, Caballo de San Martín, clips como "Pero corréte del medio" y los links a Medal.tv.
       La identidad visual de la página es negra con azul marino y detalles dorados.
       Guardá la estructura actual del sitio y no destruyas contenido existente salvo que el usuario lo pida explícitamente.
       `;
@@ -107,7 +107,7 @@ export default {
             summary: 'Propuesta generada a partir del HTML actual.',
             proposedChanges: [rawText],
             notes: ['La respuesta no vino en JSON puro, así que se devolvió como texto de fallback.'],
-            previewHtml: `<html><body style="font-family:Arial,sans-serif;background:#0b0f1c;color:#e7e9f1;padding:24px;"><h2 style="color:#d9a94a;">Propuesta</h2><pre style="white-space:pre-wrap;">${escapeHtml(rawText)}</pre></body></html>`,
+            previewHtml: `<html><body style="font-family:Arial,sans-serif;background:#0b0f1c;color:#e7e9f1;padding:24px;"><h2 style="color:#d9a94a;">Propuesta</h2><pre style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(rawText)}</pre></body></html>`,
             downloadName: 'caballos-dev-propuesta.html'
           };
         }
