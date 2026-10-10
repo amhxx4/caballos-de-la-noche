@@ -6,198 +6,365 @@
   <title>Caballos de la Noche</title>
   <style>
     :root {
-      --bg: #0b0f1c;
-      --card: #131a30;
+      --bg: #090d18;
+      --bg-2: #0f1830;
+      --card: rgba(19, 26, 48, 0.92);
+      --card-strong: rgba(14, 20, 34, 0.96);
       --accent: #d9a94a;
-      --accent-soft: rgba(217,169,74,0.18);
-      --text: #e7e9f1;
-      --muted: #9bb0d3;
-      --panel: rgba(12,17,29,0.96);
-      --panel-border: rgba(255,255,255,0.08);
-      --success: #37d67a;
-      --danger: #ff6b6b;
-      --shadow: rgba(0,0,0,0.28);
+      --accent-2: #f0c66c;
+      --text: #eef3ff;
+      --muted: #a8bfdc;
+      --line: rgba(255,255,255,0.09);
+      --glow: rgba(217, 169, 74, 0.2);
+      --shadow: rgba(0,0,0,0.38);
+      --success: #4ad38f;
+      --danger: #ff7575;
     }
+
     * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #000000;
+      background:
+        radial-gradient(circle at top, rgba(33,52,90,0.45), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(217,169,74,0.12), transparent 26%),
+        #000;
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
       position: relative;
+      min-height: 100vh;
     }
+
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(
+      background: linear-gradient(
         90deg,
-        transparent 0px,
+        transparent 0,
+        transparent 1px,
+        rgba(255,255,255,0.02) 1px,
+        rgba(255,255,255,0.02) 2px,
         transparent 2px,
-        rgba(255, 255, 255, 0.02) 2px,
-        rgba(255, 255, 255, 0.02) 4px
+        transparent 100%
       );
+      background-size: 32px 32px;
       pointer-events: none;
       z-index: -1;
+      opacity: 0.6;
     }
+
+    a { color: inherit; }
+
     header {
-      padding: 3rem 1.5rem 2rem;
-      text-align: center;
-      background: linear-gradient(180deg, rgba(18,31,65,0.96), transparent 85%);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      padding: 2rem 1.25rem 0.5rem;
+      background: linear-gradient(180deg, rgba(11,15,28,0.9), rgba(11,15,28,0.35) 55%, transparent 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
+
+    .hero-panel {
+      width: min(1200px, calc(100% - 2rem));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(120px, 170px) 1fr;
+      gap: 1.4rem;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(15, 24, 48, 0.78), rgba(16, 23, 39, 0.55));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 2rem;
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 18px 38px rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+    }
+
+    .logo-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 150px;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 150px;
+      display: block;
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.2);
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .eyebrow {
+      margin: 0;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
     header h1 {
       margin: 0;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      letter-spacing: 0.08em;
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      line-height: 0.98;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 18px rgba(217,169,74,0.08);
     }
+
     header p {
+      margin: 0;
       max-width: 760px;
-      margin: 1rem auto 0;
       color: var(--muted);
+      font-size: 1.04rem;
     }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.2rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .hero-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(217,169,74,0.7);
+    }
+
     nav {
-      margin-top: 2rem;
+      width: min(1200px, calc(100% - 2rem));
+      margin: 1.25rem auto 0;
       display: flex;
       justify-content: center;
-      gap: 1rem;
+      align-items: center;
+      gap: 0.8rem;
       flex-wrap: wrap;
     }
+
     nav a {
       color: var(--text);
       text-decoration: none;
-      padding: 0.6rem 1rem;
-      border: 1px solid rgba(255,255,255,0.16);
+      padding: 0.7rem 1rem;
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 999px;
-      transition: background 0.2s, transform 0.2s;
+      background: rgba(255,255,255,0.02);
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      font-weight: 600;
     }
-    nav a:hover { background: rgba(217,169,74,0.16); transform: translateY(-2px); }
+
+    nav a:hover {
+      background: rgba(217,169,74,0.12);
+      border-color: rgba(217,169,74,0.35);
+      transform: translateY(-1px);
+    }
+
     .container {
       width: min(1200px, calc(100% - 2rem));
       margin: 0 auto;
       padding: 2rem 0 4rem;
     }
+
     section {
-      margin-bottom: 3rem;
+      margin-bottom: 2.4rem;
     }
+
     .section-heading {
       display: flex;
       align-items: center;
       gap: 0.8rem;
       margin-bottom: 1rem;
     }
-    .section-heading h2 {
-      margin: 0;
-      font-size: 2rem;
-    }
+
     .section-heading span {
       display: inline-flex;
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      background: rgba(217,169,74,0.18);
+      background: rgba(217,169,74,0.12);
       color: var(--accent);
       font-weight: 700;
+      border: 1px solid rgba(217,169,74,0.18);
     }
-    .grid {
-      display: grid;
-      gap: 1.5rem;
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.3rem);
     }
-    .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
     .card {
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 1.25rem;
-      padding: 1.5rem;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      background: linear-gradient(180deg, rgba(19,26,48,0.96), rgba(12,18,29,0.96));
+      border: 1px solid var(--line);
+      border-radius: 1.4rem;
+      padding: 1.4rem 1.45rem;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.18);
       position: relative;
       overflow: hidden;
     }
+
     .card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top right, rgba(217,169,74,0.15), transparent 28%);
+      background: radial-gradient(circle at top right, rgba(217,169,74,0.14), transparent 30%);
       pointer-events: none;
     }
+
     .card h3, .card h4 {
-      margin: 0 0 0.75rem;
+      position: relative;
+      margin: 0 0 0.7rem;
+      z-index: 1;
     }
-    .role {
-      display: inline-block;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(217,169,74,0.12);
-      color: var(--accent);
-      font-size: 0.85rem;
-      margin-bottom: 0.9rem;
+
+    .card p,
+    .card li,
+    .card ul {
+      position: relative;
+      z-index: 1;
     }
-    .card p { margin: 0 0 1rem; color: var(--muted); }
-    .avatar {
-      width: 100%;
-      height: 160px;
-      border-radius: 1rem;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+
+    .card p {
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+    }
+
+    .story-grid {
       display: grid;
-      place-items: center;
-      color: rgba(255,255,255,0.55);
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      border: 1px dashed rgba(255,255,255,0.12);
+      gap: 1.2rem;
+      grid-template-columns: 1.5fr 0.8fr;
     }
-    .logo {
-      width: auto;
-      max-width: 140px;
-      height: auto;
-      display: block;
-      margin: 0 auto 1.4rem;
+
+    .story-panel {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .mini-stat {
+      display: grid;
+      gap: 0.5rem;
+      padding: 1rem 1.1rem;
       border-radius: 1rem;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
     }
-    .badge { color: var(--accent); }
+
+    .mini-stat strong {
+      color: var(--accent-2);
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .members-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .members-grid .card ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .cards-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
     .clip-card {
       display: grid;
       gap: 1rem;
-      border-radius: 1.25rem;
+      border-radius: 1.2rem;
       overflow: hidden;
       background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
       border: 1px solid rgba(255,255,255,0.08);
       text-decoration: none;
       color: inherit;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
     }
+
     .clip-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(217,169,74,0.4);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+      transform: translateY(-3px);
+      border-color: rgba(217,169,74,0.35);
+      box-shadow: 0 20px 38px rgba(0,0,0,0.22);
     }
+
     .clip-cover {
       width: 100%;
       height: auto;
       aspect-ratio: 16/9;
       object-fit: cover;
       border-radius: 1rem 1rem 0 0;
+      display: block;
     }
+
     .clip-info {
-      padding: 1rem 1.25rem 1.25rem;
+      padding: 1rem 1.1rem 1.1rem;
     }
+
     .clip-info h3 {
-      margin: 0 0 0.5rem;
-      font-size: 1.1rem;
+      margin: 0 0 0.4rem;
+      font-size: 1.08rem;
     }
+
     .clip-info p {
       margin: 0;
       color: var(--muted);
+      font-size: 0.92rem;
     }
+
+    .video-container {
+      width: 100%;
+      border-radius: 1rem;
+      overflow: hidden;
+      background: #000;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      border-radius: 1rem;
+      background: #000;
+    }
+
     .creator-card {
       max-width: 380px;
       margin: 0 auto;
       text-align: center;
     }
+
     .creator-img {
       width: 128px;
       height: 128px;
@@ -207,147 +374,47 @@
       border: 1px solid rgba(255,255,255,0.12);
       object-fit: cover;
       background: #0b0f1c;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
     }
-    .media-card {
-      display: grid;
-      gap: 1rem;
-    }
-    .media-card iframe, .media-card .placeholder {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: 1rem;
-      border: 0;
-      background: #0f172a;
-      color: #99abd4;
-      display: grid;
-      place-items: center;
-      text-align: center;
-    }
-    .tag-list {
-      list-style: none;
-      padding: 0;
-      margin: 0.5rem 0 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-    }
-    .tag-list li {
-      font-size: 0.85rem;
-      color: var(--text);
-      background: rgba(255,255,255,0.08);
-      padding: 0.45rem 0.75rem;
-      border-radius: 999px;
-    }
+
     .poll-card {
-      background: var(--card);
+      background: linear-gradient(180deg, rgba(19,26,48,0.96), rgba(12,18,29,0.96));
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 1.25rem;
-      padding: 2rem;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      border-radius: 1.4rem;
+      padding: 1.6rem;
+      box-shadow: 0 18px 38px rgba(0,0,0,0.18);
     }
-    .poll-option {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.04);
-      border-radius: 0.8rem;
-      cursor: pointer;
-      transition: background 0.2s;
+
+    .poll-card p {
+      color: var(--muted);
     }
-    .poll-option:hover {
-      background: rgba(217,169,74,0.12);
-    }
-    .poll-option input {
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-      accent-color: var(--accent);
-    }
-    .poll-option label {
-      flex: 1;
-      cursor: pointer;
-      font-size: 1rem;
-      color: var(--text);
-    }
-    .poll-result {
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .result-item {
-      margin-bottom: 1.5rem;
-    }
-    .result-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.95rem;
-    }
-    .result-bar {
-      width: 100%;
-      height: 24px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .result-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), rgba(217,169,74,0.6));
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 0.5rem;
-      color: #000;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
+
     .poll-button {
       width: 100%;
-      padding: 0.8rem 1.5rem;
-      margin-top: 1.5rem;
-      background: linear-gradient(135deg, var(--accent), rgba(217,169,74,0.8));
-      color: #0b0f1c;
+      padding: 0.9rem 1.4rem;
+      margin-top: 1.3rem;
       border: none;
-      border-radius: 0.8rem;
+      border-radius: 0.9rem;
+      background: linear-gradient(135deg, var(--accent), rgba(217,169,74,0.8));
+      color: #101825;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s ease, filter 0.2s ease;
     }
+
     .poll-button:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
+      filter: brightness(1.03);
     }
+
     footer {
       text-align: center;
       padding: 2rem 1rem 3rem;
       color: var(--muted);
       font-size: 0.95rem;
     }
-    video {
-      width: 100%;
-      border-radius: 0.8rem;
-      background: #000;
-    }
-    video::-webkit-media-controls-panel {
-      background-color: rgba(217, 169, 74, 0.1);
-    }
-    video::-webkit-media-controls-play-button {
-      background: transparent;
-      color: var(--accent);
-    }
-    video::-webkit-media-controls-current-time-display,
-    video::-webkit-media-controls-time-remaining-display {
-      color: var(--text);
-    }
-    .video-container {
-      position: relative;
-      width: 100%;
-      border-radius: 0.8rem;
-      overflow: hidden;
-      background: #000;
-    }
+
     .chat-toggle {
       position: fixed;
       right: 1.1rem;
@@ -364,20 +431,22 @@
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
     .chat-toggle:hover {
       transform: translateY(-2px) scale(1.02);
       box-shadow: 0 22px 40px rgba(0,0,0,0.42);
     }
+
     .chat-panel {
       position: fixed;
       right: 1rem;
       bottom: 5.2rem;
       width: min(420px, calc(100vw - 1.2rem));
       max-height: min(70vh, 620px);
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
+      background: rgba(12,17,29,0.97);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 1.2rem;
-      box-shadow: 0 25px 50px var(--shadow);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.35);
       overflow: hidden;
       z-index: 999;
       display: flex;
@@ -387,11 +456,13 @@
       visibility: hidden;
       transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
     }
+
     .chat-panel.is-open {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
     }
+
     .chat-header {
       display: flex;
       align-items: center;
@@ -400,11 +471,13 @@
       background: linear-gradient(180deg, rgba(217,169,74,0.12), rgba(255,255,255,0.02));
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+
     .chat-header h3 {
       margin: 0;
       font-size: 1rem;
       letter-spacing: 0.03em;
     }
+
     .chat-status {
       font-size: 0.74rem;
       color: var(--muted);
@@ -413,6 +486,7 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.08);
     }
+
     .chat-close {
       border: 0;
       background: transparent;
@@ -421,6 +495,7 @@
       cursor: pointer;
       opacity: 0.8;
     }
+
     .chat-messages {
       flex: 1;
       padding: 1rem;
@@ -430,6 +505,7 @@
       gap: 0.8rem;
       background: rgba(255,255,255,0.015);
     }
+
     .message {
       max-width: 85%;
       padding: 0.8rem 0.9rem;
@@ -438,18 +514,21 @@
       font-size: 0.95rem;
       word-break: break-word;
     }
+
     .message.ai {
       align-self: flex-start;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
       color: var(--text);
     }
+
     .message.user {
       align-self: flex-end;
       background: rgba(217,169,74,0.14);
       border: 1px solid rgba(217,169,74,0.3);
       color: var(--text);
     }
+
     .message.system {
       align-self: center;
       max-width: 100%;
@@ -458,12 +537,14 @@
       color: var(--muted);
       font-size: 0.82rem;
     }
+
     .message.loading {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       color: var(--muted);
     }
+
     .dot-loader {
       width: 8px;
       height: 8px;
@@ -471,10 +552,12 @@
       background: var(--accent);
       animation: pulse 1.2s infinite ease-in-out;
     }
+
     @keyframes pulse {
       0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
       40% { opacity: 1; transform: scale(1.05); }
     }
+
     .chat-input-wrap {
       display: flex;
       gap: 0.7rem;
@@ -482,6 +565,7 @@
       border-top: 1px solid rgba(255,255,255,0.08);
       background: rgba(10,14,24,0.95);
     }
+
     .chat-input {
       flex: 1;
       min-height: 52px;
@@ -494,10 +578,12 @@
       color: var(--text);
       font: inherit;
     }
+
     .chat-input:focus {
       outline: 2px solid rgba(217,169,74,0.4);
       border-color: rgba(217,169,74,0.4);
     }
+
     .chat-send {
       border: none;
       border-radius: 0.85rem;
@@ -508,18 +594,22 @@
       min-width: 90px;
       cursor: pointer;
     }
+
     .chat-send:disabled {
       cursor: wait;
       opacity: 0.7;
     }
+
     .dev-panel {
       display: none;
       border-top: 1px solid rgba(255,255,255,0.08);
       background: rgba(8,12,21,0.9);
     }
+
     .dev-panel.is-visible {
       display: block;
     }
+
     .dev-header {
       display: flex;
       justify-content: space-between;
@@ -528,15 +618,17 @@
       padding: 0.8rem 0.9rem;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+
     .dev-header strong {
-      color: var(--text);
       font-size: 0.9rem;
     }
+
     .dev-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
     }
+
     .dev-button {
       border: 1px solid rgba(255,255,255,0.1);
       background: rgba(255,255,255,0.04);
@@ -546,19 +638,21 @@
       font-size: 0.76rem;
       cursor: pointer;
     }
+
     .dev-button.primary {
       background: rgba(217,169,74,0.18);
       border-color: rgba(217,169,74,0.4);
       color: var(--accent);
     }
+
     .dev-body {
       display: grid;
-      grid-template-columns: 1fr;
       gap: 0.75rem;
       padding: 0.8rem;
       max-height: 360px;
       overflow: auto;
     }
+
     .dev-summary {
       padding: 0.7rem 0.8rem;
       border-radius: 0.8rem;
@@ -569,6 +663,7 @@
       line-height: 1.5;
       white-space: pre-wrap;
     }
+
     .dev-code {
       margin: 0;
       padding: 0.8rem;
@@ -581,6 +676,7 @@
       white-space: pre-wrap;
       max-height: 200px;
     }
+
     .dev-preview {
       width: 100%;
       min-height: 220px;
@@ -589,6 +685,7 @@
       overflow: hidden;
       background: #fff;
     }
+
     .dev-preview iframe {
       width: 100%;
       height: 260px;
@@ -596,13 +693,37 @@
       display: block;
       background: #fff;
     }
+
+    @media (max-width: 760px) {
+      .hero-panel {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .logo-wrap {
+        min-height: 0;
+      }
+
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 640px) {
-      nav { gap: 0.6rem; }
+      nav {
+        gap: 0.6rem;
+      }
+
+      nav a {
+        font-size: 0.9rem;
+      }
+
       .chat-panel {
         right: 0.5rem;
         bottom: 4.7rem;
         width: min(94vw, 420px);
       }
+
       .chat-toggle {
         right: 0.75rem;
         bottom: 0.75rem;
@@ -612,9 +733,24 @@
 </head>
 <body>
   <header>
-    <img class="logo" src="caballos.png" alt="Logo Caballos de la Noche">
-    <h1>Caballos de la Noche</h1>
-    <p>Una página dedicada al universo del grupo, su historia, sus clips más recordados y los miembros organizados por roles.</p>
+    <div class="hero-panel">
+      <div class="logo-wrap">
+        <img class="logo" src="caballos.png" alt="Logo Caballos de la Noche">
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">Comunidad • JTCO • legado</p>
+        <h1>Caballos de la Noche</h1>
+        <p>Una página dedicada al universo del grupo, su historia, sus clips más recordados y los miembros organizados por roles.</p>
+        <div class="hero-badges" aria-label="Resumen del grupo">
+          <span class="hero-badge">Historia</span>
+          <span class="hero-badge">Miembros</span>
+          <span class="hero-badge">Clips</span>
+          <span class="hero-badge">Comunidad</span>
+        </div>
+      </div>
+    </div>
+
     <nav>
       <a href="#historia">Historia</a>
       <a href="#miembros">Miembros</a>
@@ -630,9 +766,28 @@
         <span>01</span>
         <h2>Historia del grupo</h2>
       </div>
-      <div class="card">
-        <p>Los <strong>Caballos de la Noche</strong> fue un grupo creado por Israel, el cual ideó crear con amigos de la comunidad de JTCO (Juegan todos con Oveja). El grupo fue diseñado principalmente como un espacio de comunidad, humor y compartir momentos dentro del juego.</p>
-        <p>Sus primeros usuarios registrados fueron: Israel, Kiosquero, Profeta, Ronca, Puntito y Silva.</p>
+
+      <div class="story-grid">
+        <div class="card story-panel">
+          <p>Los <strong>Caballos de la Noche</strong> fue un grupo creado por Israel, el cual ideó crear con amigos de la comunidad de JTCO (Juegan todos con Oveja). El grupo fue diseñado principalmente como un espacio de comunidad, humor y compartir momentos dentro del juego.</p>
+          <p>Con el tiempo, el grupo se fue consolidando como una comunidad con identidad propia, mezclando la amistad, los momentos épicos y la cultura del grupo.</p>
+          <p>Sus primeros usuarios registrados fueron: Israel, Kiosquero, Profeta, Ronca, Puntito y Silva.</p>
+        </div>
+
+        <div class="card">
+          <div class="mini-stat">
+            <strong>6</strong>
+            <span>Usuarios iniciales del grupo</span>
+          </div>
+          <div class="mini-stat">
+            <strong>5</strong>
+            <span>Roles principales visibles en la web</span>
+          </div>
+          <div class="mini-stat">
+            <strong>∞</strong>
+            <span>Moments que siguen haciendo historia</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -641,73 +796,80 @@
         <span>02</span>
         <h2>Roles y miembros</h2>
       </div>
-      <div class="card">
-        <h3>Administradores</h3>
-        <ul>
-          <li>Lel (m0nx.)</li>
-          <li>Rondon (maximo8638)</li>
-          <li>Armaloo (armaloo)</li>
-          <li>Silva (skaybeilison)</li>
-          <li>Ronca (capithecap)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Moderadores</h3>
-        <ul>
-          <li>elrusovv (elrusovv)</li>
-          <li>profeta (luchiiqq)</li>
-          <li>kiyora (moneyforever765)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Caballo de San Martín</h3>
-        <ul>
-          <li>Israel (israel7029)</li>
-          <li>Kiosquero (rockargentino)</li>
-          <li>Lucapo (lucapo_)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Miembros</h3>
-        <ul>
-          <li>matiamiluu (ilvym_)</li>
-          <li>Meseri (meseri_dis)</li>
-          <li>JuanMablo (hernansito)</li>
-          <li>chicago ç (chicago_secundario_10084)</li>
-          <li>mene (antesnickeabamene)</li>
-          <li>ortega (miqueas5743)</li>
-          <li>Benja (benjkk_)</li>
-          <li>De gea (monoasqueroso)</li>
-          <li>Double (double215)</li>
-          <li>Eslovenia (eslovenia_13)</li>
-          <li>facuuy (facuuy._)</li>
-          <li>SalameGamer777 (luquita10)</li>
-          <li>MagoValdiviaa⭐ (magovaldivia65652)</li>
-          <li>mi bombo (bingo.boxeador)</li>
-          <li>Osvaldo (osv_14)</li>
-          <li>puntito (julianlk1234)</li>
-          <li>rodriguez (rodriguez12.4)</li>
-          <li>Trini (poncini_)</li>
-          <li>calleriOTK7 (callerii12)</li>
-          <li>colo (snt5)</li>
-          <li>falopinha (.falopina)</li>
-          <li>fribu (fribuqsy)</li>
-          <li>Hungria (godee0203_36395)</li>
-          <li>Martito (martop_dc)</li>
-          <li>Nelson Mandela (mandelaforever)</li>
-          <li>NeThErFi (netherf1) (¿Who is he?)</li>
-          <li>pan con queso (panceta1719)</li>
-          <li>santi (_.santi21)</li>
-          <li>tererezinho (tererezinho)</li>
-          <li>tuvieja (pablon27)</li>
-          <li>Zanetti (zanetti4654)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Usuarios Viejos</h3>
-        <ul>
-          <li>Coreyy (coreyy_)</li>
-        </ul>
+
+      <div class="members-grid">
+        <div class="card">
+          <h3>Administradores</h3>
+          <ul>
+            <li>Lel (m0nx.)</li>
+            <li>Rondon (maximo8638)</li>
+            <li>Armaloo (armaloo)</li>
+            <li>Silva (skaybeilison)</li>
+            <li>Ronca (capithecap)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Moderadores</h3>
+          <ul>
+            <li>elrusovv (elrusovv)</li>
+            <li>profeta (luchiiqq)</li>
+            <li>kiyora (moneyforever765)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Caballo de San Martín</h3>
+          <ul>
+            <li>Israel (israel7029)</li>
+            <li>Kiosquero (rockargentino)</li>
+            <li>Lucapo (lucapo_)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Miembros</h3>
+          <ul>
+            <li>matiamiluu (ilvym_)</li>
+            <li>Meseri (meseri_dis)</li>
+            <li>JuanMablo (hernansito)</li>
+            <li>chicago ç (chicago_secundario_10084)</li>
+            <li>mene (antesnickeabamene)</li>
+            <li>ortega (miqueas5743)</li>
+            <li>Benja (benjkk_)</li>
+            <li>De gea (monoasqueroso)</li>
+            <li>Double (double215)</li>
+            <li>Eslovenia (eslovenia_13)</li>
+            <li>facuuy (facuuy._)</li>
+            <li>SalameGamer777 (luquita10)</li>
+            <li>MagoValdiviaa⭐ (magovaldivia65652)</li>
+            <li>mi bombo (bingo.boxeador)</li>
+            <li>Osvaldo (osv_14)</li>
+            <li>puntito (julianlk1234)</li>
+            <li>rodriguez (rodriguez12.4)</li>
+            <li>Trini (poncini_)</li>
+            <li>calleriOTK7 (callerii12)</li>
+            <li>colo (snt5)</li>
+            <li>falopinha (.falopina)</li>
+            <li>fribu (fribuqsy)</li>
+            <li>Hungria (godee0203_36395)</li>
+            <li>Martito (martop_dc)</li>
+            <li>Nelson Mandela (mandelaforever)</li>
+            <li>NeThErFi (netherf1) (¿Who is he?)</li>
+            <li>pan con queso (panceta1719)</li>
+            <li>santi (_.santi21)</li>
+            <li>tererezinho (tererezinho)</li>
+            <li>tuvieja (pablon27)</li>
+            <li>Zanetti (zanetti4654)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Usuarios Viejos</h3>
+          <ul>
+            <li>Coreyy (coreyy_)</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -757,6 +919,7 @@
           </div>
         </a>
       </div>
+
       <p style="margin-top: 1rem; color: var(--muted);">Haz clic en la imagen o en el nombre para abrir el clip directamente en Medal.tv.</p>
     </section>
 
@@ -765,8 +928,9 @@
         <span>04</span>
         <h2>¿Qué deberíamos agregar?</h2>
       </div>
+
       <div class="poll-card">
-        <p style="margin: 0 0 1.5rem; color: var(--muted);">Comparte tu sugerencia y ayuda a mejorar la página.</p>
+        <p>Comparte tu sugerencia y ayuda a mejorar la página.</p>
         <form id="suggestionForm">
           <div style="margin-bottom: 1.5rem;">
             <label for="nombre" style="display: block; color: var(--text); margin-bottom: 0.5rem; font-weight: 500;">Tu nombre (opcional):</label>
@@ -778,6 +942,7 @@
           </div>
           <button type="submit" class="poll-button">Enviar sugerencia</button>
         </form>
+
         <div id="successMessage" style="display: none; margin-top: 1.5rem; padding: 1rem; background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.3); border-radius: 0.8rem; color: #dfffe8;">
           ✓ ¡Gracias por tu sugerencia!
         </div>
@@ -789,6 +954,7 @@
         <span>05</span>
         <h2>Creador del sitio</h2>
       </div>
+
       <div class="creator-card clip-card">
         <img class="creator-img" src="creator.png" alt="Foto de matiamiluu" onerror="if(!this.dataset.tried){this.dataset.tried='imgur';this.src='https://i.imgur.com/xPPof9z.jpg';} else {this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22128%22 height=%22128%22 viewBox=%220 0 128 128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%22%230c1426%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23d9a94a%22 font-size=%2216%22 font-family=%22Arial%22%3ECDN%3C/text%3E%3C/svg%3E';}">
         <div class="clip-info">
@@ -844,7 +1010,7 @@
   <script>
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLHMLTZZz3FMJr1hNI71sXYSboM_Rp2bVWXhNhqV7soX7RqDPYdDsEkjyFIo4zijimxg/exec";
     const COOLDOWN_TIME = 300000;
-    const CHAT_API_URL = (window.CABALLOS_CHAT_API_URL || "").replace(/\/$/, "");
+    const CHAT_API_URL = (window.CABALLOS_CHAT_API_URL || "https://caballos-chat.nckkhx1.workers.dev/api/chat").replace(/\/$/, "");
     const state = {
       rateLimitUntil: 0,
       isLoading: false,
